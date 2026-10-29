@@ -1,0 +1,642 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Wir töpfern zusammen eine Tasse im Handaufbau. Welcher Dienstag passt?">
+<meta name="theme-color" content="#2c8378">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232c8378'/%3E%3Cpath d='M14 20h30l-3 30c0 3-2 5-5 5H22c-3 0-5-2-5-5z' fill='%23f08a24'/%3E%3Cpath d='M43 26c9 0 11 5 11 9s-3 10-12 10v-5c5 0 7-2 7-5s-2-4-6-4z' fill='%23ec6552'/%3E%3C/svg%3E">
+<title>Tassen-Dienstag</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=DM+Mono:wght@500&display=swap">
+<style>
+/* Layout: a folk-art collage of risograph tiles up top, then one big Dienstag grid as the working surface. Single deliberate look, no white anywhere. */
+:root {
+  --ink: #1f2a44;
+  --night: #24365c;
+  --teal: #2c8378;
+  --turq: #5fc4b3;
+  --orange: #f08a24;
+  --mustard: #f2bf2e;
+  --coral: #ec6552;
+  --pink: #f2a0b4;
+  --lime: #a9c443;
+  --brick: #b9432c;
+  --sand: #f5d99a;
+  --peach: #f7c48c;
+
+  --display: "Bungee", "Arial Black", Impact, sans-serif;
+  --body: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.12 0 0 0 0 0.16 0 0 0 0 0.27 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  color-scheme: light;
+}
+* { box-sizing: border-box }
+[hidden] { display: none !important }
+html { background: var(--teal) }
+body {
+  margin: 0;
+  background: var(--teal);
+  color: var(--sand);
+  font: 400 17px/1.5 var(--body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: max(20px, env(safe-area-inset-top, 0px)) max(48px, env(safe-area-inset-bottom, 0px));
+  position: relative;
+}
+body::after {
+  content: "";
+  position: fixed; inset: 0;
+  background: var(--grain);
+  opacity: .32;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 50;
+}
+.wrap { max-width: 1120px; margin: 0 auto; display: grid; gap: 18px }
+
+/* ---------- collage hero ---------- */
+.collage {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-auto-rows: minmax(64px, auto);
+  gap: 8px;
+  padding: 8px;
+  background: var(--ink);
+  border-radius: 6px;
+}
+.tile { border-radius: 4px; position: relative; overflow: hidden; min-width: 0 }
+.t-title {
+  grid-column: 1 / 8; grid-row: 1 / 4;
+  background: var(--orange);
+  color: var(--ink);
+  padding: 22px 24px 20px;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 14px;
+}
+.t-title .eyebrow {
+  font: 500 12px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase;
+  background: var(--ink); color: var(--mustard);
+  align-self: flex-start; padding: 6px 9px; border-radius: 3px;
+}
+h1 {
+  margin: 0;
+  font: 400 clamp(40px, 7.4vw, 86px)/.92 var(--display);
+  letter-spacing: -.01em;
+  text-wrap: balance;
+  text-shadow: 3px 3px 0 var(--coral);
+}
+h1 span { display: block; color: var(--night); text-shadow: 3px 3px 0 var(--mustard) }
+.t-title p { margin: 0; max-width: 34ch; font-weight: 600; font-size: 18px; line-height: 1.35 }
+
+.t-cup {
+  grid-column: 8 / 11; grid-row: 1 / 3;
+  background: var(--turq);
+  display: grid; place-items: center; padding: 10px;
+}
+.t-cup svg { width: 100%; max-width: 190px; height: auto }
+
+.t-letters {
+  grid-column: 11 / 13; grid-row: 1 / 4;
+  background: var(--pink);
+  color: var(--brick);
+  display: flex; align-items: center; justify-content: center;
+  font: 400 clamp(22px, 3vw, 34px)/1 var(--display);
+  writing-mode: vertical-rl; text-orientation: upright; letter-spacing: -.08em;
+  padding: 10px 0;
+}
+.t-zig {
+  grid-column: 8 / 11; grid-row: 3 / 4;
+  background:
+    linear-gradient(135deg, var(--mustard) 25%, transparent 25%) -14px 0 / 28px 28px,
+    linear-gradient(225deg, var(--mustard) 25%, transparent 25%) -14px 0 / 28px 28px,
+    linear-gradient(315deg, var(--mustard) 25%, transparent 25%) 0 0 / 28px 28px,
+    linear-gradient(45deg, var(--mustard) 25%, var(--night) 25%) 0 0 / 28px 28px;
+}
+.t-where {
+  grid-column: 1 / 6; grid-row: 4 / 6;
+  background: var(--night); color: var(--sand);
+  padding: 18px 20px;
+  display: flex; flex-direction: column; gap: 8px; justify-content: center;
+}
+.label { font: 500 11px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--turq) }
+.addr { font: 800 22px/1.2 var(--body); color: var(--mustard); user-select: all }
+.when { font: 400 20px/1.15 var(--display); color: var(--pink); margin-bottom: 6px }
+.where-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+.chip-btn {
+  font: 600 14px/1 var(--body);
+  border: 2px solid var(--mustard); color: var(--mustard); background: transparent;
+  padding: 8px 12px; border-radius: 999px; cursor: pointer; text-decoration: none;
+}
+.chip-btn:hover { background: var(--mustard); color: var(--night) }
+.chip-btn:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--lime); outline-offset: 2px }
+
+.t-dots {
+  grid-column: 6 / 8; grid-row: 4 / 6;
+  background: radial-gradient(circle at 50% 50%, var(--coral) 34%, transparent 36%) 0 0 / 22px 22px, var(--lime);
+}
+.t-what {
+  grid-column: 8 / 13; grid-row: 4 / 6;
+  background: var(--lime); color: var(--ink);
+  padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; justify-content: center;
+}
+.t-what .label { color: var(--night) }
+.steps { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 14px; counter-reset: s }
+.steps li { counter-increment: s; display: flex; gap: 8px; align-items: baseline; font-weight: 600; font-size: 15px; line-height: 1.3 }
+.steps li::before {
+  content: counter(s);
+  font: 400 13px/1 var(--display);
+  background: var(--ink); color: var(--lime);
+  min-width: 22px; height: 22px; border-radius: 50%;
+  display: inline-grid; place-items: center; flex: none; transform: translateY(3px);
+}
+
+/* ---------- planner ---------- */
+.planner {
+  background: var(--mustard);
+  color: var(--ink);
+  border-radius: 6px;
+  padding: 22px clamp(14px, 3vw, 28px) 26px;
+  display: grid; gap: 18px;
+  box-shadow: 8px 8px 0 var(--ink);
+}
+.planner-head { display: flex; flex-wrap: wrap; gap: 10px 24px; align-items: end; justify-content: space-between }
+h2 { margin: 0; font: 400 clamp(26px, 4vw, 40px)/1 var(--display); color: var(--brick) }
+.planner-head p { margin: 4px 0 0; max-width: 52ch; font-weight: 600 }
+.status {
+  font: 500 12px/1.3 var(--mono); letter-spacing: .06em;
+  background: var(--ink); color: var(--turq);
+  padding: 8px 11px; border-radius: 3px; max-width: 38ch;
+}
+.status[data-mode="local"] { color: var(--peach) }
+
+.best {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+  background: var(--coral); color: var(--ink);
+  padding: 12px 14px; border-radius: 4px;
+  font-weight: 800; font-size: 18px;
+}
+.best .stamp {
+  font: 400 13px/1 var(--display); letter-spacing: .04em;
+  background: var(--ink); color: var(--coral); padding: 7px 9px; border-radius: 3px;
+}
+
+.scroller { overflow-x: auto; border-radius: 4px; background: var(--sand); -webkit-overflow-scrolling: touch }
+table { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 760px; font-variant-numeric: tabular-nums }
+th, td { padding: 0; text-align: center; border-bottom: 2px dashed rgba(31, 42, 68, .18) }
+thead th {
+  background: var(--night); color: var(--sand);
+  padding: 12px 6px 10px; vertical-align: bottom;
+  font-weight: 600;
+}
+thead th .dow { display: block; font: 500 11px/1 var(--mono); letter-spacing: .14em; color: var(--turq); text-transform: uppercase }
+thead th .dnum { display: block; font: 400 26px/1.05 var(--display); color: var(--mustard) }
+thead th .mon { display: block; font: 500 12px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase }
+thead th.is-best { background: var(--brick) }
+thead th.is-best .dnum { color: var(--sand) }
+th.name-col, td.name-col {
+  position: sticky; left: 0; z-index: 2;
+  text-align: left; min-width: 150px; max-width: 200px;
+  padding: 10px 12px;
+}
+thead th.name-col { background: var(--ink); color: var(--mustard); font: 500 12px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; vertical-align: middle }
+tbody td.name-col { background: var(--peach); font-weight: 800; font-size: 17px; overflow-wrap: anywhere }
+tbody tr.is-me td.name-col { background: var(--pink) }
+.name-wrap { display: flex; align-items: center; justify-content: space-between; gap: 6px }
+.me-tag { font: 500 10px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; background: var(--ink); color: var(--pink); padding: 4px 5px; border-radius: 3px; flex: none }
+td.is-best-col { background: rgba(185, 67, 44, .1) }
+
+.cell {
+  width: 100%; min-height: 58px; display: grid; place-items: center;
+  border: 0; background: transparent; cursor: pointer; padding: 8px 4px;
+}
+.cell[disabled] { cursor: default }
+.dot {
+  width: 38px; height: 38px; border-radius: 50%;
+  border: 2.5px dashed rgba(31, 42, 68, .35);
+  display: grid; place-items: center;
+  transition: transform .15s ease, background .15s ease;
+}
+.cell:not([disabled]):hover .dot { border-color: var(--ink); transform: rotate(-8deg) scale(1.06) }
+.cell[aria-pressed="true"] .dot {
+  border: 0;
+  background: var(--coral);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+.cell[aria-pressed="true"] .dot svg { display: block }
+.dot svg { display: none; width: 22px; height: 22px }
+
+tfoot td { background: var(--night); color: var(--sand); padding: 10px 4px; border-bottom: 0 }
+tfoot td.name-col { background: var(--ink); color: var(--mustard); font: 500 12px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase }
+.count { font: 400 22px/1 var(--display); color: var(--turq) }
+.count.zero { color: rgba(245, 217, 154, .35) }
+tfoot td.is-best-col .count { color: var(--mustard) }
+
+.empty-row td { padding: 26px 16px; text-align: left; font-weight: 600; background: var(--sand) }
+.empty-row td span { display: block; max-width: 48ch }
+
+.join {
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch;
+  background: var(--ink); padding: 12px; border-radius: 4px;
+}
+.join label { flex-basis: 100%; font: 500 11px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--mustard) }
+.join input {
+  flex: 1 1 220px; min-width: 0;
+  font: 700 18px/1 var(--body); color: var(--ink);
+  background: var(--sand); border: 0; border-radius: 3px; padding: 13px 14px;
+}
+.join input::placeholder { color: rgba(31, 42, 68, .5) }
+.join button {
+  font: 400 16px/1 var(--display); letter-spacing: .02em;
+  background: var(--coral); color: var(--ink);
+  border: 0; border-radius: 3px; padding: 13px 18px; cursor: pointer;
+  box-shadow: 3px 3px 0 var(--mustard);
+}
+.join button:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--mustard) }
+.hint { margin: 0; font-size: 15px; font-weight: 600 }
+
+
+footer { font: 500 12px/1.5 var(--mono); color: var(--sand); opacity: .8; text-align: center; letter-spacing: .06em }
+
+/* ---------- narrow ---------- */
+@media (max-width: 760px) {
+  .collage { grid-template-columns: repeat(6, 1fr) }
+  .t-title { grid-column: 1 / 7; grid-row: auto }
+  .t-cup { grid-column: 1 / 4; grid-row: auto; min-height: 150px }
+  .t-letters { grid-column: 4 / 7; grid-row: auto; writing-mode: horizontal-tb; text-orientation: mixed; letter-spacing: 0; font-size: 26px; flex-direction: column; gap: 2px }
+  .t-letters b { display: block; font-weight: 400 }
+  .t-zig { grid-column: 1 / 7; grid-row: auto; min-height: 40px }
+  .t-where { grid-column: 1 / 7; grid-row: auto }
+  .t-dots { display: none }
+  .t-what { grid-column: 1 / 7; grid-row: auto }
+}
+@media (max-width: 420px) {
+  .steps { grid-template-columns: 1fr }
+  .addr { font-size: 20px }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dot { transition: none }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="collage" aria-label="Einladung">
+    <div class="tile t-title">
+      <span class="eyebrow">Einladung · Handaufbau</span>
+      <h1>Tassen-<span>Dienstag</span></h1>
+      <p>Wir töpfern zusammen eine Tasse von Hand. Ohne Drehscheibe, nur Ton, Hände und ein bisschen Geduld.</p>
+    </div>
+    <div class="tile t-cup" aria-hidden="true">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(5 4)" fill="#1f2a44" opacity=".9">
+          <path d="M44 62h96l-8 104c-1 8-7 13-15 13H67c-8 0-14-5-15-13z"/>
+          <path d="M138 84c26 0 34 14 34 28s-10 30-38 30v-14c16 0 24-7 24-16s-6-14-20-14z"/>
+        </g>
+        <path d="M44 62h96l-8 104c-1 8-7 13-15 13H67c-8 0-14-5-15-13z" fill="#f08a24"/>
+        <path d="M138 84c26 0 34 14 34 28s-10 30-38 30v-14c16 0 24-7 24-16s-6-14-20-14z" fill="#ec6552"/>
+        <g stroke="#b9432c" stroke-width="5" stroke-linecap="round" fill="none">
+          <path d="M50 84c14 5 28-5 42 0s28 5 44 0"/>
+          <path d="M51 106c14 5 28-5 42 0s28 5 42 0"/>
+          <path d="M53 128c14 5 28-5 40 0s26 5 40 0"/>
+          <path d="M55 150c13 5 26-5 38 0s24 5 36 0"/>
+        </g>
+        <ellipse cx="92" cy="62" rx="48" ry="9" fill="#f2bf2e"/>
+        <g stroke="#f5d99a" stroke-width="6" stroke-linecap="round" fill="none">
+          <path d="M74 44c-8-8 8-14 0-24"/>
+          <path d="M96 40c-8-8 8-14 0-24"/>
+          <path d="M118 44c-8-8 8-14 0-24"/>
+        </g>
+      </svg>
+    </div>
+    <div class="tile t-letters" aria-hidden="true"><b>TON</b><b>!</b></div>
+    <div class="tile t-zig" aria-hidden="true"></div>
+    <div class="tile t-where">
+      <span class="label">Wann</span>
+      <span class="when">Dienstag, 18:00 bis ca. 20:00</span>
+      <span class="label">Wo</span>
+      <span class="addr" id="addr">Birmensdorferstrasse 377<br>Zürich (Heuried)</span>
+      <div class="where-row">
+        <a class="chip-btn" href="https://www.google.com/maps/search/?api=1&query=Birmensdorferstrasse+377+Z%C3%BCrich" target="_blank" rel="noopener">Auf der Karte</a>
+        <button class="chip-btn" type="button" id="copy-addr">Adresse kopieren</button>
+      </div>
+    </div>
+    <div class="tile t-dots" aria-hidden="true"></div>
+    <div class="tile t-what">
+      <span class="label">So entsteht die Tasse</span>
+      <ol class="steps">
+        <li>Ton kneten, Boden ausstechen</li>
+        <li>Wülste rollen, Wand aufbauen</li>
+        <li>Henkel formen und ansetzen</li>
+        <li>Glätten, verzieren, trocknen lassen</li>
+      </ol>
+    </div>
+  </header>
+
+  <main class="planner">
+    <div class="planner-head">
+      <div>
+        <h2>Welcher Dienstag?</h2>
+        <p>Such deine Zeile und tipp alle Dienstage an, die dir passen. Der Tag mit den meisten Kreisen gewinnt.</p>
+      </div>
+      <div class="status" id="status" data-mode="loading">Liste wird geladen …</div>
+    </div>
+
+    <div class="best" id="best" hidden></div>
+
+    <div class="scroller">
+      <table id="grid">
+        <thead></thead>
+        <tbody></tbody>
+        <tfoot></tfoot>
+      </table>
+    </div>
+
+    <form class="join" id="join" autocomplete="off">
+      <label for="join-name">Fehlt jemand?</label>
+      <input id="join-name" name="name" maxlength="40" placeholder="Name" required>
+      <button type="submit">Zeile hinzufügen</button>
+    </form>
+
+  </main>
+
+  <footer>Mitbringen: Kleider, die dreckig werden dürfen · Ton, Werkzeug und Brennofen stellt das Atelier</footer>
+</div>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
+<script>
+(() => {
+  const WEEKS = 8
+  const MONTHS = ['Jan', 'Feb', 'März', 'Apr', 'Mai', 'Juni', 'Juli', 'Aug', 'Sept', 'Okt', 'Nov', 'Dez']
+  const MONTHS_LONG = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
+  const CHECK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="#1f2a44" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+  const ME_KEY = 'tassen-dienstag-me'
+
+  const pad = (n) => String(n).padStart(2, '0')
+  const keyOf = (d) => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate())
+
+  function nextTuesdays(n) {
+    const d = new Date()
+    d.setHours(12, 0, 0, 0)
+    d.setDate(d.getDate() + ((2 - d.getDay() + 7) % 7))
+    const out = []
+    for (let i = 0; i < n; i++) {
+      out.push({ key: keyOf(d), day: d.getDate(), month: d.getMonth() })
+      d.setDate(d.getDate() + 7)
+    }
+    return out
+  }
+  const TUES = nextTuesdays(WEEKS)
+
+  const store = {
+    get(k) {
+      try { return localStorage.getItem(k) } catch (e) { return null }
+    },
+    set(k, v) {
+      try { localStorage.setItem(k, v) } catch (e) { /* storage blocked: keep in memory */ }
+    },
+  }
+
+  const state = {
+    people: [],
+    loaded: false,
+    me: store.get(ME_KEY),
+  }
+
+  const $ = (id) => document.getElementById(id)
+  const grid = $('grid')
+
+  function counts() {
+    const c = {}
+    TUES.forEach((t) => { c[t.key] = 0 })
+    state.people.forEach((p) => p.days.forEach((k) => { if (k in c) { c[k]++ } }))
+    return c
+  }
+
+  function render() {
+    const all = state.people
+    const c = counts()
+    const max = Math.max(0, ...Object.values(c))
+    const bestKeys = max > 0 ? TUES.filter((t) => c[t.key] === max).map((t) => t.key) : []
+    const isBest = (k) => bestKeys.includes(k)
+
+    grid.tHead.innerHTML = '<tr><th class="name-col" scope="col">Wer</th>' + TUES.map((t) =>
+      '<th scope="col" class="' + (isBest(t.key) ? 'is-best' : '') + '"><span class="dow">Di</span><span class="dnum">' + t.day + '.</span><span class="mon">' + MONTHS[t.month] + '</span></th>'
+    ).join('') + '</tr>'
+
+    const body = grid.tBodies[0]
+    body.innerHTML = ''
+    if (!all.length) {
+      const tr = document.createElement('tr')
+      tr.className = 'empty-row'
+      const td = document.createElement('td')
+      td.colSpan = WEEKS + 1
+      const span = document.createElement('span')
+      span.textContent = state.loaded
+        ? 'Noch niemand eingetragen. Schreib unten deinen Namen rein, dann erscheint deine Zeile.'
+        : 'Die Liste wird geladen …'
+      td.appendChild(span)
+      tr.appendChild(td)
+      body.appendChild(tr)
+    }
+    all.forEach((p) => {
+      const tr = document.createElement('tr')
+      const mine = state.me === p.id
+      if (mine) { tr.className = 'is-me' }
+      const nameTd = document.createElement('td')
+      nameTd.className = 'name-col'
+      const wrap = document.createElement('div')
+      wrap.className = 'name-wrap'
+      const nm = document.createElement('span')
+      nm.textContent = p.name
+      wrap.appendChild(nm)
+      if (mine) {
+        const tag = document.createElement('span')
+        tag.className = 'me-tag'
+        tag.textContent = 'du'
+        wrap.appendChild(tag)
+      }
+      nameTd.appendChild(wrap)
+      tr.appendChild(nameTd)
+
+      TUES.forEach((t) => {
+        const td = document.createElement('td')
+        if (isBest(t.key)) { td.className = 'is-best-col' }
+        const b = document.createElement('button')
+        b.type = 'button'
+        b.className = 'cell'
+        const on = p.days.includes(t.key)
+        b.setAttribute('aria-pressed', String(on))
+        b.setAttribute('aria-label', p.name + ', Dienstag ' + t.day + '. ' + MONTHS_LONG[t.month] + (on ? ': passt' : ': passt nicht'))
+        b.innerHTML = '<span class="dot">' + CHECK + '</span>'
+        b.addEventListener('click', () => toggle(p.id, t.key))
+        td.appendChild(b)
+        tr.appendChild(td)
+      })
+      body.appendChild(tr)
+    })
+
+    grid.tFoot.innerHTML = '<tr><td class="name-col">Zusagen</td>' + TUES.map((t) =>
+      '<td class="' + (isBest(t.key) ? 'is-best-col' : '') + '"><span class="count' + (c[t.key] ? '' : ' zero') + '">' + c[t.key] + '</span></td>'
+    ).join('') + '</tr>'
+
+    const best = $('best')
+    if (bestKeys.length && all.length > 1) {
+      const names = bestKeys.map((k) => {
+        const t = TUES.find((x) => x.key === k)
+        return 'Dienstag, ' + t.day + '. ' + MONTHS_LONG[t.month]
+      })
+      best.hidden = false
+      best.innerHTML = '<span class="stamp">Favorit</span>'
+      const txt = document.createElement('span')
+      txt.textContent = names.join(' oder ') + ' · ' + max + ' von ' + all.length + ' können'
+      best.appendChild(txt)
+    } else {
+      best.hidden = true
+    }
+  }
+
+  function setStatus(mode) {
+    const el = $('status')
+    el.dataset.mode = mode
+    el.textContent = {
+      live: 'Live · alle sehen dieselbe Liste',
+      error: 'Speichern hat gerade nicht geklappt. Lade die Seite neu und versuch es nochmal.',
+      offline: 'Die Liste ist gerade nicht erreichbar. Versuch es in ein paar Minuten nochmal.',
+      setup: 'Datenbank ist noch nicht verbunden.',
+    }[mode] || ''
+  }
+
+  const cfg = window.TASSEN_CONFIG || {}
+  if (!cfg.supabaseUrl || !cfg.supabaseKey || !window.supabase) {
+    state.loaded = true
+    setStatus('setup')
+    render()
+    $('join').hidden = true
+    return
+  }
+  const sb = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  })
+
+  // Rows with a write in flight keep their local days until the write lands.
+  const inflight = {}
+
+  async function load() {
+    const { data, error } = await sb.from('people').select('id, name, days, created_at').order('created_at')
+    if (error) {
+      setStatus('offline')
+      return
+    }
+    const local = {}
+    state.people.forEach((p) => { local[p.id] = p })
+    state.people = data.map((r) => ({
+      id: r.id,
+      name: String(r.name || ''),
+      days: inflight[r.id] && local[r.id] ? local[r.id].days : (r.days || []),
+    }))
+    state.loaded = true
+    setStatus('live')
+    render()
+  }
+
+  let loadTimer = null
+  function scheduleLoad() {
+    clearTimeout(loadTimer)
+    loadTimer = setTimeout(load, 250)
+  }
+
+  async function writeDays(id) {
+    if (inflight[id]) { inflight[id].again = true; return }
+    inflight[id] = { again: false }
+    try {
+      do {
+        inflight[id].again = false
+        const row = state.people.find((p) => p.id === id)
+        if (!row) { break }
+        const { error } = await sb.from('people')
+          .update({ days: row.days.slice(), updated_at: new Date().toISOString() })
+          .eq('id', id)
+        if (error) { throw error }
+      } while (inflight[id].again)
+    } catch (e) {
+      setStatus('error')
+    } finally {
+      delete inflight[id]
+    }
+  }
+
+  function toggle(id, k) {
+    const row = state.people.find((p) => p.id === id)
+    if (!row) { return }
+    const days = new Set(row.days)
+    if (days.has(k)) { days.delete(k) } else { days.add(k) }
+    row.days = Array.from(days).sort()
+    if (state.me !== id) {
+      state.me = id
+      store.set(ME_KEY, id)
+    }
+    render()
+    writeDays(id)
+  }
+
+  $('join').addEventListener('submit', async (ev) => {
+    ev.preventDefault()
+    const input = $('join-name')
+    const name = input.value.trim().slice(0, 40)
+    if (!name) { return }
+    const btn = ev.submitter || $('join').querySelector('button')
+    btn.disabled = true
+    const { data, error } = await sb.from('people').insert({ name }).select('id, name, days, created_at').single()
+    btn.disabled = false
+    if (error) {
+      setStatus('error')
+      return
+    }
+    input.value = ''
+    state.me = data.id
+    store.set(ME_KEY, data.id)
+    if (!state.people.some((p) => p.id === data.id)) {
+      state.people.push({ id: data.id, name: data.name, days: data.days || [] })
+    }
+    render()
+  })
+
+  async function copyText(text) {
+    try {
+      await navigator.clipboard.writeText(text)
+      return true
+    } catch (e) {
+      return false
+    }
+  }
+  $('copy-addr').addEventListener('click', (ev) => {
+    const btn = ev.currentTarget
+    copyText('Birmensdorferstrasse 377, Zürich (Heuried)').then((ok) => {
+      if (ok) {
+        btn.textContent = 'Kopiert'
+        setTimeout(() => { btn.textContent = 'Adresse kopieren' }, 1800)
+      } else {
+        const range = document.createRange()
+        range.selectNodeContents($('addr'))
+        const sel = window.getSelection()
+        sel.removeAllRanges()
+        sel.addRange(range)
+      }
+    })
+  })
+
+  render()
+  load()
+  sb.channel('people-changes')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'people' }, scheduleLoad)
+    .subscribe()
+  // Fallback if the live channel drops: refresh when the tab comes back and every 30 s while visible.
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) { load() } })
+  setInterval(() => { if (!document.hidden) { load() } }, 30000)
+})()
+</script>
+</body>
+</html>
