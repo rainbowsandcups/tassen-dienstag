@@ -401,7 +401,7 @@ footer { font: 500 12px/1.5 var(--mono); color: var(--sand); opacity: .8; text-a
     <div class="planner-head">
       <div>
         <h2>Welcher Dienstag?</h2>
-        <p>Eine fertige Tasse braucht zwei Abende, mindestens zwei Wochen auseinander. Tipp in deiner Zeile alle Dienstage an, die dir passen. Die Seite sucht das Paar, an dem am meisten von uns beide Male können.</p>
+        <p>Eine fertige Tasse braucht zwei Abende, mindestens zwei Wochen auseinander. Tipp in deiner Zeile alle Dienstage an, die dir passen. Die Seite sucht das Paar, an dem am meisten von uns beide Male können. Letzter möglicher Abend ist der 15. Dezember.</p>
       </div>
       <div class="status" id="status" data-mode="loading">Liste wird geladen …</div>
     </div>
@@ -431,7 +431,7 @@ footer { font: 500 12px/1.5 var(--mono); color: var(--sand); opacity: .8; text-a
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
 (() => {
-  const WEEKS = 10
+  const LAST_DAY = '2026-12-15'
   const MIN_GAP_WEEKS = 2
   const MONTHS = ['Jan', 'Feb', 'März', 'Apr', 'Mai', 'Juni', 'Juli', 'Aug', 'Sept', 'Okt', 'Nov', 'Dez']
   const MONTHS_LONG = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
@@ -441,18 +441,18 @@ footer { font: 500 12px/1.5 var(--mono); color: var(--sand); opacity: .8; text-a
   const pad = (n) => String(n).padStart(2, '0')
   const keyOf = (d) => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate())
 
-  function nextTuesdays(n) {
+  function nextTuesdays(last) {
     const d = new Date()
     d.setHours(12, 0, 0, 0)
     d.setDate(d.getDate() + ((2 - d.getDay() + 7) % 7))
     const out = []
-    for (let i = 0; i < n; i++) {
+    while (keyOf(d) <= last) {
       out.push({ key: keyOf(d), day: d.getDate(), month: d.getMonth() })
       d.setDate(d.getDate() + 7)
     }
     return out
   }
-  const TUES = nextTuesdays(WEEKS)
+  const TUES = nextTuesdays(LAST_DAY)
 
   const store = {
     get(k) {
@@ -498,7 +498,7 @@ footer { font: 500 12px/1.5 var(--mono); color: var(--sand); opacity: .8; text-a
       const tr = document.createElement('tr')
       tr.className = 'empty-row'
       const td = document.createElement('td')
-      td.colSpan = WEEKS + 1
+      td.colSpan = TUES.length + 1
       const span = document.createElement('span')
       span.textContent = state.loaded
         ? 'Noch niemand eingetragen. Schreib unten deinen Namen rein, dann erscheint deine Zeile.'
