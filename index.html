@@ -156,6 +156,39 @@ h1 span { display: block; color: var(--night); text-shadow: 3px 3px 0 var(--must
   display: inline-grid; place-items: center; flex: none; transform: translateY(3px);
 }
 
+/* ---------- cup gallery ---------- */
+.cups {
+  background: var(--night);
+  border-radius: 6px;
+  padding: 20px clamp(14px, 3vw, 24px) 26px;
+  display: grid; gap: 16px;
+}
+.cups-head { display: flex; flex-wrap: wrap; gap: 4px 20px; align-items: baseline; justify-content: space-between }
+.cups h2 { color: var(--mustard) }
+.cups-head p { margin: 0; max-width: 46ch; font-weight: 600; color: var(--sand) }
+.cup-grid {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px;
+}
+.cup {
+  border-radius: 4px; overflow: hidden;
+  box-shadow: 4px 4px 0 var(--ink);
+  transform: rotate(var(--tilt, 0deg));
+  transition: transform .2s ease;
+}
+.cup:hover { transform: rotate(0deg) scale(1.04) }
+/* Multiply drops the photos' white backdrop into the tile colour, so the cups sit on the palette. */
+.cup img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; mix-blend-mode: multiply; filter: saturate(1.1) contrast(1.05) }
+.c1 { background: var(--pink); --tilt: -2deg }
+.c2 { background: var(--turq); --tilt: 1.5deg }
+.c3 { background: var(--mustard); --tilt: -1deg }
+.c4 { background: var(--peach); --tilt: 2deg }
+.c5 { background: var(--coral); --tilt: -1.5deg }
+.c6 { background: var(--lime); --tilt: 1deg }
+@media (max-width: 760px) {
+  .cup-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px }
+}
+
 /* ---------- planner ---------- */
 .planner {
   background: var(--mustard);
@@ -285,7 +318,7 @@ footer { font: 500 12px/1.5 var(--mono); color: var(--sand); opacity: .8; text-a
   .addr { font-size: 20px }
 }
 @media (prefers-reduced-motion: reduce) {
-  .dot { transition: none }
+  .dot, .cup { transition: none }
 }
 </style>
 </head>
@@ -346,6 +379,21 @@ footer { font: 500 12px/1.5 var(--mono); color: var(--sand); opacity: .8; text-a
       <p class="session2">Die gebrannte Tasse glasieren</p>
     </div>
   </header>
+
+  <section class="cups" aria-labelledby="cups-title">
+    <div class="cups-head">
+      <h2 id="cups-title">So können sie aussehen</h2>
+      <p>Ein paar Becher im Handaufbau, jeder ein bisschen schief und genau richtig so.</p>
+    </div>
+    <ul class="cup-grid">
+      <li class="cup c1"><img src="img/tasse-1.jpg" width="578" height="720" alt="Becher, oben hellblau, dann weiss, unten orange verlaufend" loading="lazy"></li>
+      <li class="cup c2"><img src="img/tasse-2.jpg" width="680" height="720" alt="Orange-mintgrüner Becher mit eingeprägtem Blumen- und Vogelmuster" loading="lazy"></li>
+      <li class="cup c3"><img src="img/tasse-3.jpg" width="720" height="687" alt="Becher in Koralle mit mintgrünem Fuss" loading="lazy"></li>
+      <li class="cup c4"><img src="img/tasse-4.jpg" width="710" height="720" alt="Salbeigrüner Becher mit roten Streifen" loading="lazy"></li>
+      <li class="cup c5"><img src="img/tasse-5.jpg" width="666" height="720" alt="Seladongrüner Becher mit gehämmerter Oberfläche" loading="lazy"></li>
+      <li class="cup c6"><img src="img/tasse-6.jpg" width="680" height="720" alt="Becher, oben glasiert, unten roher Ton mit Regenbogen-Stempel" loading="lazy"></li>
+    </ul>
+  </section>
 
   <main class="planner">
     <div class="planner-head">
