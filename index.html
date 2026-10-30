@@ -177,8 +177,13 @@ h1 span { display: block; color: var(--night); text-shadow: 3px 3px 0 var(--must
   transition: transform .2s ease;
 }
 .cup:hover { transform: rotate(0deg) scale(1.04) }
-/* Multiply drops the photos' white backdrop into the tile colour, so the cups sit on the palette. */
-.cup img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; mix-blend-mode: multiply; filter: saturate(1.1) contrast(1.05) }
+/* Cut-out cups (transparent background) stand on the tile in their real glaze colours. */
+.cup { aspect-ratio: 4 / 5; max-width: 100%; display: grid; place-items: center; padding: 14% 12% 12% }
+.cup picture { display: contents }
+.cup img {
+  display: block; width: 100%; height: 100%; object-fit: contain;
+  filter: drop-shadow(5px 7px 0 rgba(31, 42, 68, .28));
+}
 .c1 { background: var(--pink); --tilt: -2deg }
 .c2 { background: var(--turq); --tilt: 1.5deg }
 .c3 { background: var(--mustard); --tilt: -1deg }
@@ -386,12 +391,12 @@ footer { font: 500 12px/1.5 var(--mono); color: var(--sand); opacity: .8; text-a
       <p>Ein paar Becher im Handaufbau, jeder ein bisschen schief und genau richtig so.</p>
     </div>
     <ul class="cup-grid">
-      <li class="cup c1"><img src="img/tasse-1.jpg" width="578" height="720" alt="Becher, oben hellblau, dann weiss, unten orange verlaufend" loading="lazy"></li>
-      <li class="cup c2"><img src="img/tasse-2.jpg" width="680" height="720" alt="Orange-mintgrüner Becher mit eingeprägtem Blumen- und Vogelmuster" loading="lazy"></li>
-      <li class="cup c3"><img src="img/tasse-3.jpg" width="720" height="687" alt="Becher in Koralle mit mintgrünem Fuss" loading="lazy"></li>
-      <li class="cup c4"><img src="img/tasse-4.jpg" width="710" height="720" alt="Salbeigrüner Becher mit roten Streifen" loading="lazy"></li>
-      <li class="cup c5"><img src="img/tasse-5.jpg" width="666" height="720" alt="Seladongrüner Becher mit gehämmerter Oberfläche" loading="lazy"></li>
-      <li class="cup c6"><img src="img/tasse-6.jpg" width="680" height="720" alt="Becher, oben glasiert, unten roher Ton mit Regenbogen-Stempel" loading="lazy"></li>
+      <li class="cup c1"><picture><source srcset="img/becher-1.avif" type="image/avif"><img src="img/becher-1.png" alt="Becher, oben hellblau, dann weiss, unten orange verlaufend" loading="lazy"></picture></li>
+      <li class="cup c2"><picture><source srcset="img/becher-2.avif" type="image/avif"><img src="img/becher-2.png" alt="Orange-mintgrüner Becher mit eingeprägtem Blumen- und Vogelmuster" loading="lazy"></picture></li>
+      <li class="cup c3"><picture><source srcset="img/becher-3.avif" type="image/avif"><img src="img/becher-3.png" alt="Becher in Koralle mit mintgrünem Fuss" loading="lazy"></picture></li>
+      <li class="cup c4"><picture><source srcset="img/becher-4.avif" type="image/avif"><img src="img/becher-4.png" alt="Salbeigrüner Becher mit roten Streifen" loading="lazy"></picture></li>
+      <li class="cup c5"><picture><source srcset="img/becher-5.avif" type="image/avif"><img src="img/becher-5.png" alt="Seladongrüner Becher mit gehämmerter Oberfläche" loading="lazy"></picture></li>
+      <li class="cup c6"><picture><source srcset="img/becher-6.avif" type="image/avif"><img src="img/becher-6.png" alt="Becher, oben glasiert, unten roher Ton mit Regenbogen-Stempel" loading="lazy"></picture></li>
     </ul>
   </section>
 
