@@ -123,6 +123,8 @@ h1 span { display: block; color: var(--night); text-shadow: 3px 3px 0 var(--must
 .label { font: 500 11px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--turq) }
 .addr { font: 800 22px/1.2 var(--body); color: var(--mustard); user-select: all }
 .when { font: 400 20px/1.15 var(--display); color: var(--pink); margin-bottom: 6px }
+.price { font: 700 17px/1.3 var(--body); color: var(--lime); margin-top: -2px }
+.addr + .label { margin-top: 6px }
 .where-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
 .chip-btn {
   font: 600 14px/1 var(--body);
@@ -317,6 +319,8 @@ footer { font: 500 12px/1.5 var(--mono); color: var(--sand); opacity: .8; text-a
       <span class="when">Dienstag, 18:00 bis ca. 20:00</span>
       <span class="label">Wo</span>
       <span class="addr" id="addr">Birmensdorferstrasse 377<br>Zürich (Heuried)</span>
+      <span class="label">Kosten</span>
+      <span class="price">CHF 20.– per TWINT für Material &amp; Brennen</span>
       <div class="where-row">
         <a class="chip-btn" href="https://www.google.com/maps/search/?api=1&query=Birmensdorferstrasse+377+Z%C3%BCrich" target="_blank" rel="noopener">Auf der Karte</a>
         <button class="chip-btn" type="button" id="copy-addr">Adresse kopieren</button>
@@ -361,7 +365,7 @@ footer { font: 500 12px/1.5 var(--mono); color: var(--sand); opacity: .8; text-a
 
   </main>
 
-  <footer>Mitbringen: Kleider, die dreckig werden dürfen · Ton, Werkzeug und Brennofen stellt das Atelier</footer>
+  <footer>Ton, Glasuren und Werkzeug sind da · Mitbringen: Kleider, die dreckig werden dürfen</footer>
 </div>
 
 <script src="config.js"></script>
