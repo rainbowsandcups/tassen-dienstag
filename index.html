@@ -124,6 +124,8 @@ h1 span { display: block; color: var(--night); text-shadow: 3px 3px 0 var(--must
 .addr { font: 800 22px/1.2 var(--body); color: var(--mustard); user-select: all }
 .when { font: 400 20px/1.15 var(--display); color: var(--pink); margin-bottom: 6px }
 .price { font: 700 17px/1.3 var(--body); color: var(--lime); margin-top: -2px }
+.session2 { margin: 0; font-weight: 600; font-size: 15px; line-height: 1.3 }
+.steps + .label { margin-top: 4px }
 .addr + .label { margin-top: 6px }
 .where-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
 .chip-btn {
@@ -196,6 +198,11 @@ thead th .dow { display: block; font: 500 11px/1 var(--mono); letter-spacing: .1
 thead th .dnum { display: block; font: 400 26px/1.05 var(--display); color: var(--mustard) }
 thead th .mon { display: block; font: 500 12px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase }
 thead th.is-best { background: var(--brick) }
+thead th .slot {
+  display: block; width: max-content; margin: 0 auto 6px;
+  font: 500 10px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase;
+  background: var(--mustard); color: var(--ink); padding: 4px 5px; border-radius: 2px;
+}
 thead th.is-best .dnum { color: var(--sand) }
 th.name-col, td.name-col {
   position: sticky; left: 0; z-index: 2;
@@ -328,13 +335,15 @@ footer { font: 500 12px/1.5 var(--mono); color: var(--sand); opacity: .8; text-a
     </div>
     <div class="tile t-dots" aria-hidden="true"></div>
     <div class="tile t-what">
-      <span class="label">So entsteht die Tasse</span>
+      <span class="label">Termin 1 · Tasse aufbauen</span>
       <ol class="steps">
         <li>Ton kneten</li>
         <li>Auswallen, Rechteck ausschneiden</li>
         <li>Zylinder als Wand formen</li>
         <li>Boden ausschneiden, alles glätten</li>
       </ol>
+      <span class="label">Termin 2 · mind. 2 Wochen später</span>
+      <p class="session2">Die gebrannte Tasse glasieren</p>
     </div>
   </header>
 
@@ -342,7 +351,7 @@ footer { font: 500 12px/1.5 var(--mono); color: var(--sand); opacity: .8; text-a
     <div class="planner-head">
       <div>
         <h2>Welcher Dienstag?</h2>
-        <p>Such deine Zeile und tipp alle Dienstage an, die dir passen. Der Tag mit den meisten Kreisen gewinnt.</p>
+        <p>Eine fertige Tasse braucht zwei Abende, mindestens zwei Wochen auseinander. Tipp in deiner Zeile alle Dienstage an, die dir passen. Die Seite sucht das Paar, an dem am meisten von uns beide Male können.</p>
       </div>
       <div class="status" id="status" data-mode="loading">Liste wird geladen …</div>
     </div>
@@ -372,7 +381,8 @@ footer { font: 500 12px/1.5 var(--mono); color: var(--sand); opacity: .8; text-a
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js"></script>
 <script>
 (() => {
-  const WEEKS = 8
+  const WEEKS = 10
+  const MIN_GAP_WEEKS = 2
   const MONTHS = ['Jan', 'Feb', 'März', 'Apr', 'Mai', 'Juni', 'Juli', 'Aug', 'Sept', 'Okt', 'Nov', 'Dez']
   const MONTHS_LONG = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
   const CHECK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5" fill="none" stroke="#1f2a44" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
@@ -422,12 +432,14 @@ footer { font: 500 12px/1.5 var(--mono); color: var(--sand); opacity: .8; text-a
   function render() {
     const all = state.people
     const c = counts()
-    const max = Math.max(0, ...Object.values(c))
-    const bestKeys = max > 0 ? TUES.filter((t) => c[t.key] === max).map((t) => t.key) : []
-    const isBest = (k) => bestKeys.includes(k)
+    const pair = bestPair(c)
+    const slotOf = (k) => (pair ? (k === pair.a.key ? 1 : k === pair.b.key ? 2 : 0) : 0)
+    const isBest = (k) => slotOf(k) > 0
 
     grid.tHead.innerHTML = '<tr><th class="name-col" scope="col">Wer</th>' + TUES.map((t) =>
-      '<th scope="col" class="' + (isBest(t.key) ? 'is-best' : '') + '"><span class="dow">Di</span><span class="dnum">' + t.day + '.</span><span class="mon">' + MONTHS[t.month] + '</span></th>'
+      '<th scope="col" class="' + (isBest(t.key) ? 'is-best' : '') + '">' +
+      (isBest(t.key) ? '<span class="slot">Termin ' + slotOf(t.key) + '</span>' : '') +
+      '<span class="dow">Di</span><span class="dnum">' + t.day + '.</span><span class="mon">' + MONTHS[t.month] + '</span></th>'
     ).join('') + '</tr>'
 
     const body = grid.tBodies[0]
@@ -487,19 +499,35 @@ footer { font: 500 12px/1.5 var(--mono); color: var(--sand); opacity: .8; text-a
     ).join('') + '</tr>'
 
     const best = $('best')
-    if (bestKeys.length && all.length > 1) {
-      const names = bestKeys.map((k) => {
-        const t = TUES.find((x) => x.key === k)
-        return 'Dienstag, ' + t.day + '. ' + MONTHS_LONG[t.month]
-      })
+    if (pair && all.length > 1) {
+      const label = (t) => 'Di ' + t.day + '. ' + MONTHS_LONG[t.month]
       best.hidden = false
       best.innerHTML = '<span class="stamp">Favorit</span>'
       const txt = document.createElement('span')
-      txt.textContent = names.join(' oder ') + ' · ' + max + ' von ' + all.length + ' können'
+      txt.textContent = label(pair.a) + ' + ' + label(pair.b) + ' · ' +
+        (pair.both ? pair.both + ' von ' + all.length + ' können an beiden' : 'noch niemand kann an beiden')
       best.appendChild(txt)
     } else {
       best.hidden = true
     }
+  }
+
+  // A finished cup needs two sessions at least two weeks apart. Pick the pair most people can attend
+  // both of; ties go to more single-day yeses, then to the earlier pair.
+  function bestPair(c) {
+    let best = null
+    for (let i = 0; i < TUES.length; i++) {
+      for (let j = i + MIN_GAP_WEEKS; j < TUES.length; j++) {
+        const a = TUES[i]
+        const b = TUES[j]
+        const both = state.people.filter((p) => p.days.includes(a.key) && p.days.includes(b.key)).length
+        const sum = c[a.key] + c[b.key]
+        if (!best || both > best.both || (both === best.both && sum > best.sum)) {
+          best = { a, b, both, sum }
+        }
+      }
+    }
+    return best && best.sum > 0 ? best : null
   }
 
   function setStatus(mode) {
